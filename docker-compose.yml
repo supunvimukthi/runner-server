@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+  runner:
+    container_name: runner
+    build:
+      context: .
+      network: host
+      dockerfile: Dockerfile
+    ports:
+      - 8080:80
+    depends_on:
+      - postgres
+    environment:
+      - ENV=Development
+    volumes:
+      - .:/code
+  postgres:
+    image: postgres:latest
+    container_name: runner-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespw
+      POSTGRES_DB: Runner
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql
